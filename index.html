@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="vendors/angular-cron-jobs/dist/angular-cron-jobs.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -32,6 +33,12 @@
 <a id="angular-cron-jobs" class="anchor" href="#angular-cron-jobs" aria-hidden="true"><span class="octicon octicon-link"></span></a>angular-cron-jobs</h1>
 
 <p>UI Component For Creating Cron Job Syntax To Send To Server</p>
+
+<br>
+<div ng-app="boilerPlateApp">
+  <ui-view></ui-view>
+</div>
+<br>
 
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
@@ -78,6 +85,9 @@
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
+    <script src="vendors/angular/angular.js"></script>
+    <script src="vendors/angular-cron-jobs/dist/angular-cron-jobs.js"></script>
+    <script src="app.js"></script>
     
   </body>
 </html>
