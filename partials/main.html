@@ -1,4 +1,20 @@
+<h2>DEMO BASIC:</h2>
+<br>
 <cron-selection output="output"></cron-selection>
 <br>
 <br>
 <p><strong>OUTPUT:</strong> {{output}}</p>
+<br>
+<h2>DEMO WITH CONFIG:</h2>
+<br>
+<pre>$scope.config = {
+  options : {
+    allowMonth : false,
+    allowYear : false
+  }
+}</pre>
+<cron-selection output="myOutput" config="config"></cron-selection>
+<br>
+<br>
+<p><strong>OUTPUT:</strong> {{myOutput}}</p>
+<br>

@@ -20,6 +20,15 @@ var boilerPlateApp = angular.module('boilerPlateApp', ['ui.router', 'angular-cro
 
   $scope.output;
 
+  $scope.myOutput;
+
+  $scope.config = {
+      options : {
+        allowMonth : false,
+        allowYear : false
+      }
+  }
+
 })
 
 

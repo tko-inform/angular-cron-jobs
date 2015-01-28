@@ -23,12 +23,14 @@
 <p>UI Component For Creating Cron Job Syntax To Send To Server</p>
 
 <br>
-<h2>DEMO:</h2>
+
 
 <div ng-app="boilerPlateApp">
   <ui-view></ui-view>
 </div>
+
 <br>
+
 
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
@@ -47,7 +49,7 @@
 
 <p>Insert the directive where you would like it to appear in your application:</p>
 
-<pre><code>&lt;cron-selection output="myOutput"&gt;&lt;/cron-selection&gt;
+<pre><code>&lt;cron-selection output="myOutput" config="myConfig"&gt;&lt;/cron-selection&gt;
 </code></pre>
 
 <p>By setting the output attribute equal to a value in your controller (i.e. <code>$scope.myOutput</code> in the example above) you have access to the cron syntax output.  </p>
@@ -59,15 +61,6 @@
 
 <p>as a string.</p>
 
-<h2>
-<a id="coming-soon" class="anchor" href="#coming-soon" aria-hidden="true"><span class="octicon octicon-link"></span></a>Coming Soon:</h2>
-
-<p>The next big to-do's on my list include:</p>
-
-<ul>
-<li>adding an options attribute to limit a user selections.</li>
-<li>creating a customize button that will toggle a much more complicated UI to allow for very specific and unique cron jobs.</li>
-</ul>
       </section>
       <header>
         <h1>Angular-cron-jobs</h1>
@@ -92,6 +85,7 @@
     <script src="vendors/ui-router/release/angular-ui-router.js"></script>
     <script src="vendors/angular-cron-jobs/dist/angular-cron-jobs.js"></script>
     <script src="app.js"></script>
+    <script src="app2.js"></script>
     
   </body>
 </html>
