@@ -7,7 +7,7 @@
 <br>
 <h2>DEMO WITH CONFIG:</h2>
 <br>
-<pre>$scope.config = {
+<pre>$scope.myConfig = {
   options : {
     allowMonth : false,
     allowYear : false
@@ -17,4 +17,12 @@
 <br>
 <br>
 <p><strong>OUTPUT:</strong> {{myOutput}}</p>
+<br>
+<h2>DEMO WITH INIT:</h2>
+<br>
+<pre>$scope.serverData = "40 5 3 5 *"</pre>
+<cron-selection output="mySecondOutput" init="serverData"></cron-selection>
+<br>
+<br>
+<p><strong>OUTPUT:</strong> {{mySecondOutput}}</p>
 <br>

@@ -29,6 +29,10 @@ var boilerPlateApp = angular.module('boilerPlateApp', ['ui.router', 'angular-cro
       }
   }
 
+  $scope.serverData = "40 5 3 5 *";
+
+  $scope.mySecondOutput;
+
 })
 
 
