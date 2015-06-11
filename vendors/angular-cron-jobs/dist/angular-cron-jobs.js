@@ -1,6 +1,6 @@
 /**
  * UI Component For Creating Cron Job Syntax To Send To Server
- * @version v1.1.0 - 2015-04-05 * @link https://github.com/jacobscarter/angular-cron-jobs
+ * @version v1.3.1 - 2015-06-11 * @link https://github.com/jacobscarter/angular-cron-jobs
  * @author Jacob Carter <jacob@ieksolutions.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -10,24 +10,28 @@ angular.module("cronselection.html", []).run(["$templateCache", function($templa
   $templateCache.put("cronselection.html",
     "<div class=\"cron-wrap\">\n" +
     "<span>Every: </span>\n" +
-    "   <select class=\"cron-select\" ng-model=\"myFrequency.base\" ng-options=\"value as text for (value,text) in frequency\"></select>\n" +
+    "	<select class=\"cron-select\" ng-model=\"myFrequency.base\" ng-options=\"value as text for (value,text) in frequency\"></select>\n" +
     "\n" +
-    "   <div class=\"select-options\">\n" +
-    "       <span ng-show=\"myFrequency.base == 4\">on </span>\n" +
-    "       <select ng-show=\"myFrequency.base == 4\" class=\"cron-select day-value\" ng-model=\"myFrequency.dayValue\" ng-options=\"(value | dayName) for value in dayValue\"></select>\n" +
-    "       <span ng-show=\"myFrequency.base >= 5\">on the </span>\n" +
-    "       <select ng-show=\"myFrequency.base >= 5\" class=\"cron-select day-of-month-value\" ng-model=\"myFrequency.dayOfMonthValue\" ng-options=\"(value | numeral) for value in dayOfMonthValue\"></select>\n" +
-    "       <span ng-show=\"myFrequency.base == 6\">of </span>\n" +
-    "       <select ng-show=\"myFrequency.base == 6\" class=\"cron-select month-value\" ng-model=\"myFrequency.monthValue\" ng-options=\"(value | monthName) for value in monthValue\"></select>\n" +
-    "       <span ng-show=\"myFrequency.base >= 2\">at </span>\n" +
-    "       <select ng-show=\"myFrequency.base >= 3\" class=\"cron-select hour-value\" ng-model=\"myFrequency.hourValue\" ng-options=\"value for value in hourValue\"></select>\n" +
-    "       <span ng-show=\"myFrequency.base >= 3\"> : </span>\n" +
-    "       <select ng-show=\"myFrequency.base >= 2\" class=\"cron-select minute-value\" ng-model=\"myFrequency.minuteValue\" ng-options=\"value for value in minuteValue\"></select>\n" +
-    "       <span ng-show=\"myFrequency.base == 2\"> past the hour</span>\n" +
-    "   </div>\n" +
+    "	<div class=\"select-options\">\n" +
+    "		<span ng-show=\"myFrequency.base == 4\">on </span>\n" +
+    "		<select ng-show=\"myFrequency.base == 4\" class=\"cron-select day-value\" ng-model=\"myFrequency.dayValue\" ng-options=\"(value | dayName) for value in dayValue\"></select>\n" +
+    "		<span ng-show=\"myFrequency.base >= 5\">on the </span>\n" +
+    "		<select ng-show=\"myFrequency.base >= 5\" class=\"cron-select day-of-month-value\" ng-model=\"myFrequency.dayOfMonthValue\" ng-options=\"(value | numeral) for value in dayOfMonthValue\"></select>\n" +
+    "		<span ng-show=\"myFrequency.base == 6\">of </span>\n" +
+    "		<select ng-show=\"myFrequency.base == 6\" class=\"cron-select month-value\" ng-model=\"myFrequency.monthValue\" ng-options=\"(value | monthName) for value in monthValue\"></select>\n" +
+    "		<span ng-show=\"myFrequency.base >= 2\">at </span>\n" +
+    "		<select ng-show=\"myFrequency.base >= 3\" class=\"cron-select hour-value\" ng-model=\"myFrequency.hourValue\" ng-options=\"value for value in hourValue\"></select>\n" +
+    "		<span ng-show=\"myFrequency.base >= 3\"> : </span>\n" +
+    "		<select ng-show=\"myFrequency.base >= 2\" class=\"cron-select minute-value\" ng-model=\"myFrequency.minuteValue\" ng-options=\"value for value in minuteValue\"></select>\n" +
+    "		<span ng-show=\"myFrequency.base == 2\"> past the hour</span>\n" +
+    "	</div>\n" +
     "</div>\n" +
     "");
 }]);
+
+'use strict';
+
+angular.module('angular-cron-jobs', ['templates-angularcronjobs']);
 
 'use strict';
 
@@ -49,6 +53,10 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['cronService', f
           return attributes.template || 'cronselection.html';
         },
         link: function($scope) {
+
+            var originalInit = undefined;
+            var initChanged = false;
+
             $scope.frequency = {
                 1: 'Minute',
                 2: 'Hour',
@@ -58,9 +66,21 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['cronService', f
                 6: 'Year'
             };
 
+
+
             if (angular.isDefined($scope.init)) {
+                console.log('init value found: ', $scope.init);
+                originalInit = angular.copy($scope.init);
                 $scope.myFrequency = cronService.fromCron($scope.init);
             }
+
+            $scope.$watch('init', function(newValue){
+                console.log('watch on init fired!', newValue, originalInit);
+                if(angular.isDefined(newValue) && newValue && (newValue !== originalInit)){
+                    initChanged = true;
+                    $scope.myFrequency = cronService.fromCron(newValue);
+                }
+            });
 
             if(typeof $scope.config === 'object' && !$scope.config.length){
                 var optionsKeyArray = Object.keys($scope.config.options);
@@ -83,9 +103,36 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['cronService', f
             $scope.dayValue = [0, 1, 2, 3, 4, 5, 6];
             $scope.monthValue = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-            $scope.$watch('myFrequency', function(n){
+            $scope.$watch('myFrequency', function(n, o){
+                console.log('myFrequency changed: ', n, initChanged);
+                if(n && (!o || n.base !== o.base) && !initChanged){
+                    console.log('base changed!', n, o);
+                    if(n && n.base && n.base >= '2') {
+                        n.minuteValue = $scope.minuteValue[0];
+                    }
+
+                    if(n && n.base && n.base >= '3') {
+                        n.hourValue = $scope.hourValue[0];
+                    }
+
+                    if(n && n.base && n.base === '4') {
+                        n.dayValue = $scope.dayValue[0];
+                    }
+
+                    if(n && n.base && n.base >= '5') {
+                        n.dayOfMonthValue = $scope.dayOfMonthValue[0];
+                    }
+
+                    if(n && n.base && n.base === '6') {
+                        n.monthValue = $scope.monthValue[0];
+                    }
+                } else if(n && n.base && o && o.base){
+                    initChanged = false;
+                }
                 $scope.output = cronService.setCron(n);
             }, true);
+
+        
         }
     };
 }]).filter('numeral', function() {
@@ -145,39 +192,40 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['cronService', f
         }
     };
 });
-
 'use strict';
 
 angular.module('angular-cron-jobs').factory('cronService', function() {
     var service = {};
 
-    service.setCron = function(n) { 
+    service.setCron = function(n) {
+        console.log('set cron called: ', n);
         var cron = ['*', '*', '*',  '*',  '*'];
 
-        if(n && n.base && n.base >= 2) {
-           cron[0] = n.minuteValue || '*';
+        if(n && n.base && n.base >= '2') {
+            cron[0] = typeof n.minuteValue !== undefined ? n.minuteValue : '*';
         }
 
-        if(n && n.base && n.base >= 3) {
-           cron[1] = n.hourValue || '*';
+        if(n && n.base && n.base >= '3') {
+            cron[1] = typeof n.hourValue !== undefined ? n.hourValue  : '*';
         }
 
-        if(n && n.base && n.base === 4) {
-           cron[4] = n.dayValue;
+        if(n && n.base && n.base === '4') {
+            cron[4] = n.dayValue;
         }
 
-        if(n && n.base && n.base >= 5) {
-           cron[2] = n.dayOfMonthValue || '*';
+        if(n && n.base && n.base >= '5') {
+            cron[2] = typeof n.dayOfMonthValue !== undefined ? n.dayOfMonthValue : '*';
         }
 
-        if(n && n.base && n.base === 6) {
-           cron[3] = n.monthValue || '*';
+        if(n && n.base && n.base === '6') {
+            cron[3] = typeof n.monthValue !== undefined ? n.monthValue : '*';
         }
-
+        console.log('cron after setCron ', cron.join(' '));
         return cron.join(' ');
     };
 
     service.fromCron = function(value) { 
+        console.log('set cron fired!');
        var cron = value.replace(/\s+/g, ' ').split(' ');
        var frequency = {base: '1'}; // default: every minute
 
@@ -192,6 +240,8 @@ angular.module('angular-cron-jobs').factory('cronService', function() {
        } else if(cron[4] === '*') {
            frequency.base = 6; // every year
        }
+
+       console.log('frequency should be 5: ', frequency, cron);
 
        if (cron[0] !== '*') {
            frequency.minuteValue = parseInt(cron[0]);
@@ -211,6 +261,7 @@ angular.module('angular-cron-jobs').factory('cronService', function() {
 
        frequency.base += ''; // 'cast' to string in order to set proper value on "every" modal
 
+       console.log('freq ', frequency);
        return frequency;
    };
    

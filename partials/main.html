@@ -26,3 +26,26 @@
 <br>
 <p><strong>OUTPUT:</strong> {{mySecondOutput}}</p>
 <br>
+<h2>SETTING CRON AFTER DIRECTIVE LOAD</h2>
+
+<p>The init attribute also works as a reset attribute</p>
+
+<p>This is an expression paired with a value in your controller. Whenever the value changes (or is set for the first time) and passed the angular.isDefined() method the cron will reset itself to match that value</p>
+
+<pre>
+$timeout(function(){
+   $scope.serverData = "0 0 * * *"
+}, 3000);
+</pre>
+
+<p>The directive will properly build out the UI to reflect this data.</p>
+<br>
+<h2>CUSTOM TEMPLATES:</h2>
+
+<p>As noted by TimotheeJeannin you can use custom template by adding the following attribute to the directive DDO:</p>
+
+<pre>
+templateUrl: function(element, attributes) {
+    return attributes.template || 'cronselection.html';
+},
+</pre>
