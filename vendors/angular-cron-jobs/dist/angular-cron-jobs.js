@@ -1,6 +1,6 @@
 /**
  * UI Component For Creating Cron Job Syntax To Send To Server
- * @version v1.4.1 - 2016-04-23 * @link https://github.com/jacobscarter/angular-cron-jobs
+ * @version v1.4.2 - 2016-04-23 * @link https://github.com/jacobscarter/angular-cron-jobs
  * @author Jacob Carter <jacob@ieksolutions.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -14,29 +14,29 @@ angular.module("cronselection.html", []).run(["$templateCache", function($templa
     "        <select class=\"cron-select\" ng-model=\"myFrequency.base\" ng-options=\"item.value as item.label for item in frequency\"></select>\n" +
     "    </div>\n" +
     "\n" +
-    "   <div class=\"select-options\">\n" +
-    "       <span ng-show=\"myFrequency.base == 4\">on </span>\n" +
+    "	<div class=\"select-options\">\n" +
+    "		<span ng-show=\"myFrequency.base == 4\">on </span>\n" +
     "        <div ng-show=\"myFrequency.base == 4\" class=\"cron-select-wrap\">\n" +
     "            <select class=\"cron-select day-value\" ng-model=\"myFrequency.dayValue\" ng-options=\"(value | cronDayName) for value in dayValue\"></select>\n" +
     "        </div>\n" +
-    "       <span ng-show=\"myFrequency.base >= 5\">on the </span>\n" +
+    "		<span ng-show=\"myFrequency.base >= 5\">on the </span>\n" +
     "        <div ng-show=\"myFrequency.base >= 5\" class=\"cron-select-wrap\">\n" +
     "            <select class=\"cron-select day-of-month-value\" ng-model=\"myFrequency.dayOfMonthValue\" ng-options=\"(value | cronNumeral) for value in dayOfMonthValue\"></select>\n" +
     "        </div>\n" +
-    "       <span ng-show=\"myFrequency.base == 6\">of </span>\n" +
+    "		<span ng-show=\"myFrequency.base == 6\">of </span>\n" +
     "        <div ng-show=\"myFrequency.base == 6\" class=\"cron-select-wrap\">\n" +
     "            <select class=\"cron-select month-value\" ng-model=\"myFrequency.monthValue\" ng-options=\"(value | cronMonthName) for value in monthValue\"></select>\n" +
     "        </div>\n" +
-    "       <span ng-show=\"myFrequency.base >= 2\">at </span>\n" +
+    "		<span ng-show=\"myFrequency.base >= 2\">at </span>\n" +
     "        <div ng-show=\"myFrequency.base >= 3\" class=\"cron-select-wrap\">\n" +
     "            <select class=\"cron-select hour-value\" ng-model=\"myFrequency.hourValue\" ng-options=\"value for value in hourValue\"></select>\n" +
     "        </div>\n" +
-    "       <span ng-show=\"myFrequency.base >= 3\"> : </span>\n" +
+    "		<span ng-show=\"myFrequency.base >= 3\"> : </span>\n" +
     "        <div ng-show=\"myFrequency.base >= 2\" class=\"cron-select-wrap\">\n" +
     "            <select class=\"cron-select minute-value\" ng-model=\"myFrequency.minuteValue\" ng-options=\"value for value in minuteValue\"></select>\n" +
     "        </div>\n" +
-    "       <span ng-show=\"myFrequency.base == 2\"> past the hour</span>\n" +
-    "   </div>\n" +
+    "		<span ng-show=\"myFrequency.base == 2\"> past the hour</span>\n" +
+    "	</div>\n" +
     "</div>\n" +
     "");
 }]);
