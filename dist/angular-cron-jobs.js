@@ -1,6 +1,6 @@
 /**
  * UI Component For Creating Cron Job Syntax To Send To Server
- * @version v1.4.2 - 2016-04-23 * @link https://github.com/jacobscarter/angular-cron-jobs
+ * @version v1.4.2 - 2016-06-16 * @link https://github.com/jacobscarter/angular-cron-jobs
  * @author Jacob Carter <jacob@ieksolutions.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -51,7 +51,7 @@ angular.module('angular-cron-jobs', ['templates-angularcronjobs']);
 
 'use strict';
 
-angular.module('angular-cron-jobs').directive('cronSelection', ['cronService', function(cronService) {
+angular.module('angular-cron-jobs').directive('cronSelection', ['$translate', 'cronService', function($translate, cronService) {
     return {
         restrict: 'EA',
         replace: true,
@@ -65,39 +65,47 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['cronService', f
           return attributes.template || 'cronselection.html';
         },
         link: function($scope) {
-
+            $scope.i18n = {};
+            
+            var msg = $translate.instant(['cron.frequency.minute','cron.frequency.hour', 'cron.frequency.day',
+                                'cron.frequency.week', 'cron.frequency.month', 'cron.frequency.year']);
+            
+            $scope.i18n.minute = msg['cron.frequency.minute'];
+            $scope.i18n.hour = msg['cron.frequency.hour'];
+            $scope.i18n.day = msg['cron.frequency.day'];
+            $scope.i18n.week = msg['cron.frequency.week'];
+            $scope.i18n.month = msg['cron.frequency.month'];
+            $scope.i18n.year = msg['cron.frequency.year'];
+            
             var originalInit = undefined;
             var initChanged = false;
 
             $scope.frequency = [
                 {
                   value : 1,
-                  label : 'Minute'  
+                  label : $scope.i18n.minute  
                 },
                 {
                   value : 2,
-                  label : 'Hour'  
+                  label : $scope.i18n.hour  
                 },
                 {
                   value : 3,
-                  label : 'Day'  
+                  label : $scope.i18n.day  
                 },
                 {
                   value : 4,
-                  label : 'Week'  
+                  label : $scope.i18n.week  
                 },
                 {
                   value : 5,
-                  label : 'Month'  
+                  label : $scope.i18n.month  
                 },
                 {
                   value : 6,
-                  label : 'Year'  
+                  label : $scope.i18n.year  
                 }
             ];
-            
-
-
 
             if (angular.isDefined($scope.init)) {
                 //console.log('init value found: ', $scope.init);
@@ -192,21 +200,38 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['cronService', f
                 return input + 'th';
         }
     };
-}).filter('cronMonthName', function() {
+}).filter('cronMonthName', function($translate) {
     return function(input) {
+        var i18n = {};
+        
+        var msg = $translate.instant(['cron.month.january','cron.month.february', 'cron.month.march', 'cron.month.april',
+                    'cron.month.may', 'cron.month.june', 'cron.month.july', 'cron.month.august', 'cron.month.september',
+                    'cron.month.october', 'cron.month.november', 'cron.month.december']);
+        i18n.january = msg['cron.month.january'];
+        i18n.february = msg['cron.month.february'];
+        i18n.march = msg['cron.month.march'];
+        i18n.april = msg['cron.month.april'];
+        i18n.may = msg['cron.month.may'];
+        i18n.june = msg['cron.month.june'];
+        i18n.july = msg['cron.month.july'];
+        i18n.august = msg['cron.month.august'];
+        i18n.september = msg['cron.month.september'];
+        i18n.october = msg['cron.month.october'];
+        i18n.november = msg['cron.month.november'];
+        i18n.december = msg['cron.month.december'];
         var months = {
-            1: 'January',
-            2: 'February',
-            3: 'March',
-            4: 'April',
-            5: 'May',
-            6: 'June',
-            7: 'July',
-            8: 'August',
-            9: 'September',
-            10: 'October',
-            11: 'November',
-            12: 'December'
+            1: i18n.january,
+            2: i18n.february,
+            3: i18n.march,
+            4: i18n.april,
+            5: i18n.may,
+            6: i18n.june,
+            7: i18n.july,
+            8: i18n.august,
+            9: i18n.september,
+            10: i18n.october,
+            11: i18n.november,
+            12: i18n.december
         };
 
         if (input !== null && angular.isDefined(months[input])) {
@@ -215,16 +240,27 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['cronService', f
             return null;
         }
     };
-}).filter('cronDayName', function() {
+}).filter('cronDayName', function($translate) {
     return function(input) {
+        var i18n = {};
+        
+        var msg = $translate.instant(['cron.day.sunday','cron.day.monday', 'cron.day.tuesday', 'cron.day.wednesday',
+                    'cron.day.thursday', 'cron.day.friday', 'cron.day.saturday']);
+        i18n.sunday = msg['cron.day.sunday'];
+        i18n.monday = msg['cron.day.monday'];
+        i18n.tuesday = msg['cron.day.tuesday'];
+        i18n.wednesday = msg['cron.day.wednesday'];
+        i18n.thursday = msg['cron.day.thursday'];
+        i18n.friday = msg['cron.day.friday'];
+        i18n.saturday = msg['cron.day.saturday'];
         var days = {
-            0: 'Sunday',
-            1: 'Monday',
-            2: 'Tuesday',
-            3: 'Wednesday',
-            4: 'Thursday',
-            5: 'Friday',
-            6: 'Saturday',
+            0: i18n.sunday,
+            1: i18n.monday,
+            2: i18n.tuesday,
+            3: i18n.wednesday,
+            4: i18n.thursday,
+            5: i18n.friday,
+            6: i18n.saturday,
         };
 
         if (input !== null && angular.isDefined(days[input])) {

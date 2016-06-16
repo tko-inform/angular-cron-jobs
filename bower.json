@@ -8,7 +8,8 @@
     "url": "git://github.com/jacobscarter/angular-cron-jobs.git"
   },
   "dependencies": {
-    "angular": "*"
+    "angular": "*",
+    "angular-translate": "*"	
   },
   "ignore": [
     "node_modules",
