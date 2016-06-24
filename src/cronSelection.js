@@ -92,7 +92,7 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['$translate', 'c
             $scope.minuteValue = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
             $scope.hourValue = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
             $scope.dayOfMonthValue = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-            $scope.dayValue = [0, 1, 2, 3, 4, 5, 6];
+            $scope.dayValue = [1, 2, 3, 4, 5, 6, 7];
             $scope.monthValue = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
             $scope.$watch('myFrequency', function(n, o){
@@ -207,13 +207,13 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['$translate', 'c
         i18n.friday = msg['cron.day.friday'];
         i18n.saturday = msg['cron.day.saturday'];
         var days = {
-            0: i18n.sunday,
-            1: i18n.monday,
-            2: i18n.tuesday,
-            3: i18n.wednesday,
-            4: i18n.thursday,
-            5: i18n.friday,
-            6: i18n.saturday,
+            1: i18n.sunday,
+            2: i18n.monday,
+            3: i18n.tuesday,
+            4: i18n.wednesday,
+            5: i18n.thursday,
+            6: i18n.friday,
+            7: i18n.saturday,
         };
 
         if (input !== null && angular.isDefined(days[input])) {

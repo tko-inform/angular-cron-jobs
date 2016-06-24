@@ -1,6 +1,6 @@
 /**
  * UI Component For Creating Cron Job Syntax To Send To Server
- * @version v1.4.2 - 2016-06-16 * @link https://github.com/jacobscarter/angular-cron-jobs
+ * @version v1.4.2 - 2016-06-24 * @link https://github.com/jacobscarter/angular-cron-jobs
  * @author Jacob Carter <jacob@ieksolutions.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -139,7 +139,7 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['$translate', 'c
             $scope.minuteValue = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
             $scope.hourValue = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
             $scope.dayOfMonthValue = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-            $scope.dayValue = [0, 1, 2, 3, 4, 5, 6];
+            $scope.dayValue = [1, 2, 3, 4, 5, 6, 7];
             $scope.monthValue = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
             $scope.$watch('myFrequency', function(n, o){
@@ -254,13 +254,13 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['$translate', 'c
         i18n.friday = msg['cron.day.friday'];
         i18n.saturday = msg['cron.day.saturday'];
         var days = {
-            0: i18n.sunday,
-            1: i18n.monday,
-            2: i18n.tuesday,
-            3: i18n.wednesday,
-            4: i18n.thursday,
-            5: i18n.friday,
-            6: i18n.saturday,
+            1: i18n.sunday,
+            2: i18n.monday,
+            3: i18n.tuesday,
+            4: i18n.wednesday,
+            5: i18n.thursday,
+            6: i18n.friday,
+            7: i18n.saturday,
         };
 
         if (input !== null && angular.isDefined(days[input])) {
@@ -274,30 +274,31 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['$translate', 'c
 'use strict';
 
 angular.module('angular-cron-jobs').factory('cronService', function() {
-    var service = {};
+var service = {};
 
     service.setCron = function(n) {
         //  console.log('set cron called: ', n);
-        var cron = ['*', '*', '*',  '*',  '*'];
+        var cron = ['0', '*', '*',  '*',  '*', '?'];
 
         if(n && n.base && n.base >= 2) {
-            cron[0] = typeof n.minuteValue !== undefined ? n.minuteValue : '*';
+            cron[1] = typeof n.minuteValue !== undefined ? n.minuteValue : '0';
         }
 
         if(n && n.base && n.base >= 3) {
-            cron[1] = typeof n.hourValue !== undefined ? n.hourValue  : '*';
+            cron[2] = typeof n.hourValue !== undefined ? n.hourValue  : '*';
         }
 
         if(n && n.base && n.base === 4) {
-            cron[4] = n.dayValue;
+            cron[3] = "?";
+            cron[5] = n.dayValue;
         }
 
         if(n && n.base && n.base >= 5) {
-            cron[2] = typeof n.dayOfMonthValue !== undefined ? n.dayOfMonthValue : '*';
+            cron[3] = typeof n.dayOfMonthValue !== undefined ? n.dayOfMonthValue : '?';
         }
 
         if(n && n.base && n.base === 6) {
-            cron[3] = typeof n.monthValue !== undefined ? n.monthValue : '*';
+            cron[4] = typeof n.monthValue !== undefined ? n.monthValue : '*';
         }
         //  console.log('cron after setCron ', cron.join(' '));
         return cron.join(' ');
@@ -307,44 +308,42 @@ angular.module('angular-cron-jobs').factory('cronService', function() {
         //  console.log('set cron fired!');
        var cron = value.replace(/\s+/g, ' ').split(' ');
        var frequency = {base: '1'}; // default: every minute
-
-       if(cron[0] === '*' && cron[1] === '*' && cron[2] === '*' && cron[3] === '*'  && cron[4] === '*') {
+       if(cron[1] === '*' && cron[2] === '*' && cron[3] === '*'  && cron[4] === '*' && cron[5] === '?') {
            frequency.base = 1; // every minute
-       } else if(cron[1] === '*' && cron[2] === '*' && cron[3] === '*'  && cron[4] === '*') {
+       } else if(cron[2] === '*' && cron[3] === '*'  && cron[4] === '*' && cron[5] === '?') {
            frequency.base = 2; // every hour
-       } else if(cron[2] === '*' && cron[3] === '*'  && cron[4] === '*') {
+       } else if(cron[3] === '*'  && cron[4] === '*' && cron[5] === '?') {
            frequency.base = 3; // every day
-       } else if(cron[2] === '*' && cron[3] === '*') {
+       } else if(cron[3] === '?') {
            frequency.base = 4; // every week
-       } else if(cron[3] === '*' && cron[4] === '*') {
+       } else if(cron[4] === '*' && cron[5] === '?') {
            frequency.base = 5; // every month
-       } else if(cron[4] === '*') {
+       } else if(cron[5] === '?') {
            frequency.base = 6; // every year
        }
 
        // console.log('frequency should be 5: ', frequency, cron);
-
-       if (cron[0] !== '*') {
-           frequency.minuteValue = parseInt(cron[0]);
-       }
        if (cron[1] !== '*') {
-           frequency.hourValue = parseInt(cron[1]);
+           frequency.minuteValue = parseInt(cron[1]);
        }
        if (cron[2] !== '*') {
-           frequency.dayOfMonthValue = parseInt(cron[2]);
+           frequency.hourValue = parseInt(cron[2]);
        }
-       if (cron[3] !== '*') {
-           frequency.monthValue = parseInt(cron[3]);
+       if (cron[3] !== '*' && cron[3] !== '?') {
+           frequency.dayOfMonthValue = parseInt(cron[3]);
        }
        if (cron[4] !== '*') {
-           frequency.dayValue = parseInt(cron[4]);
+           frequency.monthValue = parseInt(cron[4]);
+       }
+       if (cron[5] !== '*' && cron[5] !== '?') {
+          frequency.dayValue = parseInt(cron[5]);
        }
 
        //frequency.base += ''; // 'cast' to string in order to set proper value on "every" modal
 
        // console.log('freq ', frequency);
        return frequency;
-   };
+    };
    
    return service;
 });

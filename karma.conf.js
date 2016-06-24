@@ -12,6 +12,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.6/angular.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.11.0/angular-translate.js',
       'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.6/angular-mocks.js',
       'dist/*.js',
       'test/*.js'
