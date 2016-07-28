@@ -153,7 +153,7 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['$translate', 'c
                 return input + 'th';
         }
     };
-}).filter('cronMonthName', function($translate) {
+}).filter('cronMonthName', ['$translate', function($translate) {
     return function(input) {
         var i18n = {};
         
@@ -193,7 +193,7 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['$translate', 'c
             return null;
         }
     };
-}).filter('cronDayName', function($translate) {
+}]).filter('cronDayName', ['$translate', function($translate) {
     return function(input) {
         var i18n = {};
         
@@ -222,4 +222,4 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['$translate', 'c
             return null;
         }
     };
-});
+}]);

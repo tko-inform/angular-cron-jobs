@@ -1,6 +1,6 @@
 /**
  * UI Component For Creating Cron Job Syntax To Send To Server
- * @version v1.4.2 - 2016-06-24 * @link https://github.com/jacobscarter/angular-cron-jobs
+ * @version v1.4.2 - 2016-07-28 * @link https://github.com/jacobscarter/angular-cron-jobs
  * @author Jacob Carter <jacob@ieksolutions.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -200,7 +200,7 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['$translate', 'c
                 return input + 'th';
         }
     };
-}).filter('cronMonthName', function($translate) {
+}).filter('cronMonthName', ['$translate', function($translate) {
     return function(input) {
         var i18n = {};
         
@@ -240,7 +240,7 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['$translate', 'c
             return null;
         }
     };
-}).filter('cronDayName', function($translate) {
+}]).filter('cronDayName', ['$translate', function($translate) {
     return function(input) {
         var i18n = {};
         
@@ -269,7 +269,7 @@ angular.module('angular-cron-jobs').directive('cronSelection', ['$translate', 'c
             return null;
         }
     };
-});
+}]);
 
 'use strict';
 
